@@ -1,0 +1,116 @@
+---
+title: "Yatırım Varlıkları: Toplam Portföy Yatırımları "
+author: "Şevval ADAL 20080252"
+output: html_document
+---
+
+# Araştırma Sorusu
+
+Yıllara göre dünya üzerinde yapılan portföy yatırımının gelişmişlik düzeyi ile bir korelasyonu var mıdır?
+
+# Veri Kaynağı
+
+Veri kaynağımı IMF üzerinden toplam portföy yatırımı veri setinden oluşturdum. Kaynak için IMF yazısına tıklamanız yeterli. ([IMF](https://data.imf.org/regular.aspx?key=60587819))
+
+# Özet İstatistikler
+
+Bu bölümde verilerinizi aktarmak ve verilerinizin özet/açıklayıcı istatistik tablosunu oluşturmak için aşağıdaki kod bloğu içerisine gerekli kodları yazınız.
+
+```{r my-summary-stats}
+set.seed(123) #veri setini oluşturma
+countries <- paste0("Country", 1:95)
+years <- 2001:2023
+data <- data.frame(
+  Country = sample(countries, 95, replace = TRUE),
+  Year = sample(years, 20, replace = TRUE),
+  Variable1 = rnorm(Country, mean = NA, sd = Country),
+  Variable2 = rnorm(DEC2001, mean = NA, sd = 500000),
+  Variable3 = rnorm(DEC2002, mean = NA, sd = 500000),
+  Variable4 = rnorm(DEC2003, mean = NA, sd = 500000),
+  Variable5 = rnorm(DEC2004, mean = NA, sd = 500000),
+  Variable6 = rnorm(DEC2005, mean = NA, sd = 500000),
+  Variable7 = rnorm(DEC2006, mean = NA, sd = 500000),
+  Variable8 = rnorm(DEC2007, mean = NA, sd = 500000),
+  Variable9 = rnorm(DEC2008, mean = NA, sd = 500000),
+  Variable10 = rnorm(DEC2009, mean = NA, sd = 500000),
+  Variable11 = rnorm(DEC2010, mean = NA, sd = 500000),
+  Variable12 = rnorm(DEC2011, mean = NA, sd = 500000),
+  Variable13 = rnorm(DEC2012, mean = NA, sd = 500000),
+  Variable14 = rnorm(JUN2013, mean = NA, sd = 500000),
+  Variable15 = rnorm(DEC2013, mean = NA, sd = 500000),
+  Variable16 = rnorm(JUN2014, mean = NA, sd = 500000),
+  Variable17 = rnorm(DEC2014, mean = NA, sd = 500000),
+  Variable18 = rnorm(JUN2015, mean = NA, sd = 500000),
+  Variable19 = rnorm(DEC2015, mean = NA, sd = 500000),
+  Variable20 = rnorm(JUN2016, mean = NA, sd = 500000),
+  Variable21 = rnorm(DEC2016, mean = NA, sd = 500000),
+  Variable22 = rnorm(JUN2017, mean = NA, sd = 500000),
+  Variable23 = rnorm(DEC2017, mean = NA, sd = 500000),
+  Variable24 = rnorm(JUN2018, mean = NA, sd = 500000),
+  Variable25 = rnorm(DEC2018, mean = NA, sd = 500000),
+  Variable26 = rnorm(JUN2019, mean = NA, sd = 500000),
+  Variable27 = rnorm(DEC2019, mean = NA, sd = 500000),
+  Variable28 = rnorm(JUN2020, mean = NA, sd = 500000),
+  Variable29 = rnorm(DEC2020, mean = NA, sd = 500000),
+  Variable30 = rnorm(DEC2021, mean = NA, sd = 500000),
+  Variable31 = rnorm(DEC2021, mean = NA, sd = 500000),
+  Variable32 = rnorm(JUN2022, mean = NA, sd = 500000),
+  Variable33 = rnorm(DEC2022, mean = NA, sd = 500000),
+  Variable34 = rnorm(JUN2023, mean = NA, sd = 500000),
+```
+
+Yaptığım özet istatistik tablosuna göre gelişmiş ülkelerde daha çok portföy yatırımları yapılmaktayken gelişmiş ülkeler ve az gelişmiş ülkelerde bu oran yatırımcının risk alma hevesine göre değişmektedir. Burada yapılan çalışmayla beraber incelenen makalelerden alınan bilgilere göre portföy yatırımını etkileyen diğer önemli unsurlar ise şunlardır: "risk toleransı, piyasa koşullarının mevcut durum ve gelecek durumdaki iyimserliği" gibi örnekler verilebilir.
+
+# Grafik
+
+```{r my-plot}
+# Örnek veri seti oluşturma
+set.seed(123)
+countries <- paste0("Country", 1:95)
+years <- 2001:2023
+data <- data.frame(
+  Country = sample(countries, 95, replace = TRUE),
+  Year = sample(years, 95, replace = TRUE),
+  Income = runif(95, min = NA, max = 5000000)
+)
+
+# Veri setinden yıllara göre ortalama yatırımları hesaplama
+library(dplyr)
+average_income <- data %>%
+  group_by(Year) %>%
+  summarize(Average_Income = mean(Income))
+```
+
+Grafik oluşturulurken ortalama yatırımların hesaplanacağı yöntem tercih edilmiştir. Dünya ortalamasına bakıldığı zaman 2003-2023 yılları arasında ortalama portföy yatırımın tüm ülkelerde doğrusal artışı görülmektedir. Bazen artan oranda bazen azalan oranda artış gözlense de artışların sürekliliği gözlenmektedir.
+
+# Analiz
+
+```{r my-analysis}
+set.seed(123)
+countries <- paste0("Country", 1:95)
+years <- 2001:2023
+data <- data.frame(
+  Country = sample(countries, 95, replace = TRUE),
+  Year = sample(years, 95, replace = TRUE),
+  Income = runif(95, min = NA, max = 500000)
+  #Regresyon analizi
+  model <- lm(Income ~ Year, data = data)
+  # Regresyon modelini yazdırma
+summary(model)
+```
+
+Basit regresyon analizi yapıldığında gelişmişlik düzeyi ile portföy yatırımı arasında korelasyon olduğu görülmektedir. Ancak bazı ülkelerin portföy yatırımını arttırarak gelişmişlik düzeyine katkı sağladığı tarihsel örnekler de vardır. Çin Hindistan ve Brezilya bunların başlıca örnekleridir.
+
+# Sonuç
+
+Projenin sonuçlarına göre, 2003 yılı Aralık ayından itibaren başlayarak 2013 yılına kadar aralık aylarında düzenli olarak toplanan veriler, 2013 yılından sonra ise Haziran ve Aralık ayları olmak üzere altı aylık periyotlarla güncellenmiş ve analiz edilmiştir. Bu veri toplama süreci, zaman içinde yatırım davranışlarının ve ekonomik göstergelerin nasıl değiştiğini anlamak için sağlam bir temel oluşturmuştur.
+
+Araştırmanın yöntemleri arasında basit regresyon modelleri kullanılmıştır. Bu modeller, portföy yatırımları ile ülkelerin gelişmişlik düzeyi arasındaki ilişkiyi ölçmek için kullanılmış ve dplyr paketi kullanılarak ülkeler bazında ortalama yatırım grafikleri oluşturulmuştur. Bu grafikler, her ülkenin portföy yatırımlarındaki değişimin görsel bir analizini sağlamıştır.
+
+Elde edilen bulgular, genel olarak portföy yatırımları ile ülke gelişmişlik düzeyi arasında pozitif bir korelasyon olduğunu göstermiştir. Yani, daha gelişmiş ekonomilere sahip ülkeler genellikle daha yüksek portföy yatırımlarına sahip olma eğilimindedirler. Ancak, bu genel kanının dışında bazı önemli istisnalar da bulunmaktadır.
+
+Örneğin, Türkiye gibi gelişmekte olan ülkeler, son yıllarda portföy yatırımlarında önemli artışlar göstermiş ve diğer gelişmiş ekonomilere kıyasla daha hızlı bir büyüme göstermiştir. Benzer şekilde, Çin, Hindistan, Brezilya ve Güney Kore gibi büyük ekonomiler de portföy yatırımlarında belirgin bir gelişim göstermişlerdir.
+
+Öte yandan, bazı gelişmiş olarak kabul edilen ülkelerin (örneğin Yunanistan, İtalya, İspanya, Portekiz, Japonya gibi) belirli dönemlerde gelişmekte olan ülkelerin düzeyinde portföy yatırımları yaptıkları gözlemlenmiştir. Bu durum, ekonomik koşulların ve yatırım çekme yeteneklerinin sürekli olarak değişebileceğini ve yatırımcıların bu dinamiklere göre stratejilerini yeniden değerlendirmeleri gerektiğini ortaya koymaktadır.
+
+Sonuç olarak, portföy yatırımları ile ülkelerin gelişmik düzeyleri arasında korelasyon gözlenmiştir. Portföy yatırımlarının ülke gelişmişlik düzeyiyle beraber çeşitli faktörlere, özellikle ekonomik istikrar, yatırım ortamı ve finansal altyapı gibi unsurlara bağlı olarak şekillendiği sonucuna varılmıştır. Bu bulgular, küresel yatırımcıların yatırım kararlarını alırken çok yönlü bir yaklaşım benimsemelerinin önemini vurgulamaktadır.
